@@ -17,6 +17,7 @@ namespace WindowsFormsApp1
         string sql;
         int status = 0;
         string table = "subject";
+        bool error = false;
         
         
         public Subjects()
@@ -34,12 +35,29 @@ namespace WindowsFormsApp1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            status = (cmbstatus.Text == "Active" ? 1 : 0);
-            sql = "insert into `subject` (`course`, `credit`, `status`) values " +
-                "('" + txtcoursename.Text + "' " +
-                ",'" + txtcredit.Text + "' " +
-                ", '" + status + "')";
-            frm.InsertMethod(sql,"Failed to save course please try again!", "Course saved successfully!");
+            error = false;
+            if(txtcoursename.Text == "")
+            {
+                MessageBox.Show("Please insert course name!");
+                error = true;
+            }
+
+            if(txtcredit.Text == "")
+            {
+                MessageBox.Show("Please insert credit of course!");
+                error = true;
+            }
+
+            if (error == false)
+            {
+                status = (cmbstatus.Text == "Active" ? 1 : 0);
+                sql = "insert into `subject` (`course`, `credit`, `status`) values " +
+                    "('" + txtcoursename.Text + "' " +
+                    ",'" + txtcredit.Text + "' " +
+                    ", '" + status + "')";
+                frm.InsertMethod(sql, "Failed to save course please try again!", "Course saved successfully!");
+                clean();
+            }
         }
 
         private void clean()
@@ -48,6 +66,7 @@ namespace WindowsFormsApp1
             txtcredit.ResetText();
             cmbstatus.Text = "";
             txtSearch.Text = "";
+            populate();
         }
 
         public void populate()
@@ -64,6 +83,17 @@ namespace WindowsFormsApp1
         private void Subjects_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            sql = "select * from subject where concat(`ID`,`course`,`credit`,`status`) like '%" + txtSearch.Text +"%'";
+            frm.searchFilter(sql,table, dataGridView1);
+        }
+        
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            frm.searchFilter("","",dataGridView1);
         }
     }
 }

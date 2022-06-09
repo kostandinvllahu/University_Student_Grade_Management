@@ -15,20 +15,32 @@ namespace WindowsFormsApp1
     {
         MySqlConnection con = new MySqlConnection("SERVER= 127.0.0.1;PORT=3306;DATABASE=dtb;UID=root;");
         MySqlCommand cmd = new MySqlCommand();
-        
+        MySqlDataAdapter mda = new MySqlDataAdapter();
+        DataTable dtb = new DataTable();
+        DataSet ds = new DataSet();
         int result;
-        string sql;
+        
 
         public string connstring = "SERVER= 127.0.0.1;PORT=3306;DATABASE=dtb;UID=root;PASSWORD=";
 
+
+        public void searchFilter(string sql,string table, DataGridView dtg)
+        {
+            cmd = new MySqlCommand(sql, con);
+            mda = new MySqlDataAdapter(cmd);
+            ds = new DataSet();
+            mda.Fill(ds, table);
+            dtg.DataSource = ds.Tables[table];
+        }
+
         public void populateData(string sql, string table, DataGridView dtg)
         {
-            MySqlDataAdapter mda = new MySqlDataAdapter(sql, connstring);
+             mda = new MySqlDataAdapter(sql, con);
 
             try
             {
                 con.Open();
-                DataSet ds = new DataSet();
+                ds = new DataSet();
                 mda.Fill(ds, table);
                 dtg.DataSource = ds.Tables[table];
                 con.Close();
