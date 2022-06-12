@@ -45,7 +45,8 @@ namespace WindowsFormsApp1
             }
             else
             {
-                MessageBox.Show("Wrong password!");
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                MessageBox.Show("Wrong password!","Error", buttons  ,MessageBoxIcon.Error);
                 label1.Visible = false;
                 textBox1.Visible = false;
                 button4.Visible = false;

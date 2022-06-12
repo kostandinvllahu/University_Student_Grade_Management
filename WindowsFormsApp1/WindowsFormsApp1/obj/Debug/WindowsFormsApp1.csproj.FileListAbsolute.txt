@@ -34,3 +34,4 @@ F:\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.MainMenu.resourc
 F:\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.AdminPanel.resources
 F:\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Subjects.resources
 F:\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.StudentsPanel.resources
+F:\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.classes.resources
