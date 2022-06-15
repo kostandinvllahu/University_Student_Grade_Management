@@ -13,7 +13,7 @@ namespace WindowsFormsApp1
 {
     public partial class Form1 : Form
     {
-        MySqlConnection con = new MySqlConnection("SERVER=195.179.237.102;DATABASE=u583974297_dtb;UID=u583974297_dtb;PASSWORD=W0>bWizi");
+        MySqlConnection con = new MySqlConnection("SERVER=127.0.0.1;PORT=3306;DATABASE=dtb;UID=root;");
         MySqlCommand cmd = new MySqlCommand();
         MySqlDataAdapter mda = new MySqlDataAdapter();
         DataTable dtb = new DataTable();
@@ -21,8 +21,9 @@ namespace WindowsFormsApp1
         int result;
 
         //"SERVER=127.0.0.1;PORT=3306;DATABASE=dtb;UID=root;"
+        //"SERVER=195.179.237.102;DATABASE=u583974297_dtb;UID=u583974297_dtb;PASSWORD=W0>bWizi"
 
-        public string connstring = "SERVER=195.179.237.102;DATABASE=u583974297_dtb;UID=u583974297_dtb;PASSWORD=W0>bWizi";
+        public string connstring ="SERVER=127.0.0.1;PORT=3306;DATABASE=dtb;UID=root;";
 
 
         public void searchFilter(string sql,string table, DataGridView dtg)
@@ -47,8 +48,32 @@ namespace WindowsFormsApp1
                 con.Close();
             }catch(Exception ex)
             {
-                MessageBox.Show("Error " + ex.Message);
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                MessageBox.Show("Opss.. There was an error with the message: " + ex.Message + "please contact the developer of the program!", "Connection Error", buttons, MessageBoxIcon.Error);
             }
+        }
+
+        public void populateComboBox(string sql, string table,string displaymember,string valuemember, ComboBox cmb)
+        {
+            mda = new MySqlDataAdapter(sql, con);
+            try
+            {
+                con.Open();
+                ds = new DataSet();
+                mda.Fill(ds, table);
+                DataRow row = ds.Tables[table].NewRow();
+                row[displaymember] = "Select All";
+                row[valuemember] = "Select All";
+                ds.Tables[table].Rows.InsertAt(row, 0);
+                cmb.DisplayMember = displaymember;
+                cmb.ValueMember = valuemember;
+                cmb.DataSource = ds.Tables[table];
+                con.Close();
+            }catch(Exception ex)
+            {
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                MessageBox.Show("Opss.. There was an error with the message: " + ex.Message + "please contact the developer of the program!", "Connection Error", buttons, MessageBoxIcon.Error);
+             }
         }
 
         public void InsertMethod(string sql, string msg_false, string msg_true)
@@ -63,11 +88,12 @@ namespace WindowsFormsApp1
 
                 if(result > 0)
                 {
-                    MessageBox.Show(msg_true);
+                    
+                    MessageBox.Show(msg_true,"Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
-                    MessageBox.Show(msg_false);
+                    MessageBox.Show(msg_false,"Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
                 }
             }
             catch(Exception ex)

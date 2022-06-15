@@ -117,7 +117,8 @@ namespace WindowsFormsApp1
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-           
+            sql = "select * from students where concat(`ID`,`Firstname`,`Lastname`,`Email`,`Status`) like '%" + txtSearch.Text + "%'";
+            frm.searchFilter(sql, table, dataGridView1);
         }
 
         private void label10_Click(object sender, EventArgs e)
@@ -150,8 +151,7 @@ namespace WindowsFormsApp1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            sql = "select * from students where concat(`ID`,`Firstname`,`Lastname`,`Email`,`Status`) like '%" + txtSearch.Text + "%'";
-            frm.searchFilter(sql, table, dataGridView1);
+          
         }
     }
 }

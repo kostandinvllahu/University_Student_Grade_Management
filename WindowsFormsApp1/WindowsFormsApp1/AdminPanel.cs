@@ -19,7 +19,7 @@ namespace WindowsFormsApp1
         string pointgrade = "-"; string lettergrade = "-";
         string table;
         bool error = false;
-        string name; string subject; string credit;
+        string name; string subject; string credit;string subjectID;
 
         public AdminPanel()
         {
@@ -108,10 +108,11 @@ namespace WindowsFormsApp1
 
             if (error == false)
             {
-                sql = "insert into `classes` (`studentname`, `studentid`, `subject`, `year`, `semester`,`lettergrade`,`pointgrade`,`credit`) values " +
+                sql = "insert into `classes` (`studentname`, `studentid`, `subject`,`subjectID`, `year`, `semester`,`lettergrade`,`pointgrade`,`credit`) values " +
                     "('" + name + "' " +
                     ",'" + txtstd.Text + "' " +
                     ", '" + subject + "' " +
+                    ",'" +txtcls.Text+"' "+
                     ", '" +txtyear.Text + "' "+
                     ", '" + cmbSemester.Text + "' " +
                     ", '"+pointgrade+ "' " +
@@ -125,7 +126,8 @@ namespace WindowsFormsApp1
 
         private void txtSearchStd_TextChanged(object sender, EventArgs e)
         {
-            
+            sql = "select ID, Firstname, Lastname from students where concat(`ID`,`Firstname`,`Lastname`,`Email`) like '%" + txtSearchStd.Text + "%' and Status='" + 1 + "'";
+            frm.searchFilter(sql, table, dtgstd);
         }
 
         private void dtgstd_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -140,7 +142,8 @@ namespace WindowsFormsApp1
 
         private void txtSearchCls_TextChanged(object sender, EventArgs e)
         {
-            
+            sql = "select ID, course, credit from subject where concat(`ID`,`course`,`credit`) like '%" + txtSearchCls.Text + "%' and status='" + 1 + "'";
+            frm.searchFilter(sql, table, dataGridView2);
         }
 
         private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -172,14 +175,24 @@ namespace WindowsFormsApp1
 
         private void button6_Click(object sender, EventArgs e)
         {
-            sql = "select ID, course, credit from subject where concat(`ID`,`course`,`credit`) like '%" + txtSearchCls.Text + "%' and status='" + 1 + "'";
-            frm.searchFilter(sql, table, dataGridView2);
+           
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            sql = "select ID, Firstname, Lastname from students where concat(`ID`,`Firstname`,`Lastname`,`Email`) like '%" + txtSearchStd.Text + "%' and Status='" + 1 + "'";
-            frm.searchFilter(sql, table, dtgstd);
+           
+        }
+
+        private void button5_Click_1(object sender, EventArgs e)
+        {
+            TranscriptDownload td = new TranscriptDownload();
+            td.Show();
+        }
+
+        private void button6_Click_1(object sender, EventArgs e)
+        {
+            Settings st = new Settings();
+            st.Show();
         }
     }
 }
